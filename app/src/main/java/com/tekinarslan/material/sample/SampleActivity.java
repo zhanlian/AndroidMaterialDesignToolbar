@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class SampleActivity extends ActionBarActivity {
+public class SampleActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -35,10 +36,12 @@ public class SampleActivity extends ActionBarActivity {
         setContentView(R.layout.activity_sample);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.computeScroll();
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
         }
         pager = (ViewPager) findViewById(R.id.viewpager);
