@@ -4,9 +4,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -19,8 +16,8 @@ import android.widget.ListView;
 
 public class SampleActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayoutNew mDrawerLayout;
+    private ActionBarDrawerToggleNew drawerToggle;
 
     private ListView mDrawerList;
     ViewPager pager;
@@ -35,7 +32,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayoutNew) findViewById(R.id.drawer_layout);
         mDrawerLayout.computeScroll();
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -55,7 +52,7 @@ public class SampleActivity extends AppCompatActivity {
                 return Color.WHITE;
             }
         });
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerToggle = new ActionBarDrawerToggleNew(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(drawerToggle);
         String[] values = new String[]{
                 "DEFAULT", "RED", "BLUE", "MATERIAL GREY"
