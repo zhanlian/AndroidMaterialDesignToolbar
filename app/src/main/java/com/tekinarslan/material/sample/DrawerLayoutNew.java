@@ -45,7 +45,7 @@ public class DrawerLayoutNew extends ViewGroup implements DrawerLayoutImplNew {
 
     @IntDef({STATE_IDLE, STATE_DRAGGING, STATE_SETTLING})
     @Retention(RetentionPolicy.SOURCE)
-    private @interface State {
+    @interface State {
     }
 
     /**
@@ -725,6 +725,20 @@ public class DrawerLayoutNew extends ViewGroup implements DrawerLayoutImplNew {
             final View child = getChildAt(i);
             final int childAbsGravity = getDrawerViewAbsoluteGravity(child);
             if ((childAbsGravity & Gravity.HORIZONTAL_GRAVITY_MASK) == absHorizGravity) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    View findDrawerContentView(int gravity){
+        final int absHorizGravity = GravityCompat.getAbsoluteGravity(
+                gravity, ViewCompat.getLayoutDirection(this)) & Gravity.HORIZONTAL_GRAVITY_MASK;
+        final int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = getChildAt(i);
+            final int childAbsGravity = getDrawerViewAbsoluteGravity(child);
+            if ((childAbsGravity & Gravity.HORIZONTAL_GRAVITY_MASK) != absHorizGravity) {
                 return child;
             }
         }
@@ -1673,15 +1687,21 @@ public class DrawerLayoutNew extends ViewGroup implements DrawerLayoutImplNew {
 
         private void peekDrawer() {
             final View toCapture;
+            final View toContent;
             final int childLeft;
+            final int childContent;
             final int peekDistance = mDragger.getEdgeSize();
             final boolean leftEdge = mAbsGravity == Gravity.LEFT;
             if (leftEdge) {
                 toCapture = findDrawerWithGravity(Gravity.LEFT);
+                toContent = findDrawerContentView(Gravity.LEFT);
                 childLeft = (toCapture != null ? -toCapture.getWidth() : 0) + peekDistance;
+                childContent = childLeft;
             } else {
                 toCapture = findDrawerWithGravity(Gravity.RIGHT);
+                toContent = findDrawerContentView(Gravity.RIGHT);
                 childLeft = getWidth() - peekDistance;
+                childContent = childLeft;
             }
             // Only peek if it would mean making the drawer more visible and the drawer isn't locked
             if (toCapture != null && ((leftEdge && toCapture.getLeft() < childLeft) ||
@@ -1689,6 +1709,7 @@ public class DrawerLayoutNew extends ViewGroup implements DrawerLayoutImplNew {
                     getDrawerLockMode(toCapture) == LOCK_MODE_UNLOCKED) {
                 final LayoutParams lp = (LayoutParams) toCapture.getLayoutParams();
                 mDragger.smoothSlideViewTo(toCapture, childLeft, toCapture.getTop());
+                mDragger.smoothSlideViewTo(toContent,childContent,toContent.getTop());
                 lp.isPeeking = true;
                 invalidate();
 

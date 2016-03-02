@@ -3,6 +3,7 @@ package com.tekinarslan.material.sample;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -93,6 +94,36 @@ public class SampleActivity extends AppCompatActivity {
 
                         break;
                 }
+
+            }
+        });
+        mDrawerLayout.setDrawerListener(new DrawerLayoutNew.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                View mContent = mDrawerLayout.getChildAt(0);
+                View mMenu = drawerView;
+                float scale = 1 - slideOffset;
+                ViewCompat.setAlpha(mMenu, 0.6f + 0.4f * (1 - scale));
+                ViewCompat.setTranslationX(mContent,
+                        mMenu.getMeasuredWidth() * (1 - scale));
+                ViewCompat.setPivotX(mContent, 0);
+                ViewCompat.setPivotY(mContent,
+                        mContent.getMeasuredHeight() / 2);
+                mContent.invalidate();
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(@DrawerLayoutNew.State int newState) {
 
             }
         });
